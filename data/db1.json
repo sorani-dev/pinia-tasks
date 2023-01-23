@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "buy some milk",
-      "isFav": true
+      "isFav": false
     },
     {
       "id": 2,
@@ -19,6 +19,11 @@
       "id": 4,
       "title": "meet the boss",
       "isFav": false
+    },
+    {
+      "id": 1813,
+      "isFavorite": false,
+      "title": "new favorite"
     },
     {
       "id": 6443,
