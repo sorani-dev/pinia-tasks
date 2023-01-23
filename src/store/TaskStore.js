@@ -3,9 +3,8 @@ import {defineStore} from 'pinia'
 export const useTaskStore = defineStore('taskStore',
     {
         state: () => ({
-            tasks: [
-                {id: 1, title: "buy some milk", isFav: false},
-                {id: 2, title: "play Sauerbraten", isFav: true},],
+            tasks: [],
+            isLoading: false,
         }),
         getters: {
             favorites() {
@@ -13,7 +12,7 @@ export const useTaskStore = defineStore('taskStore',
             },
             favoritesCount() {
                 return this.tasks.reduce((p, current) => {
-                    return current.isFav ? p+1 : p
+                    return current.isFav ? p + 1 : p
                 }, 0)
             },
             totalCount(state) {
@@ -21,11 +20,27 @@ export const useTaskStore = defineStore('taskStore',
             }
         },
         actions: {
+            async getTasks() {
+                this.isLoading = true
+
+                try {
+                    const res = await fetch('http://localhost:3000/tasks')
+
+                    if (res.ok) {
+                        const data = await res.json()
+                        this.tasks = data
+                    }
+                } catch (error) {
+                    console.error(error)
+                } finally {
+                    this.isLoading = false
+                }
+            },
             addTask(task) {
                 this.tasks.push(task)
             },
             deleteTask(id) {
-                this.tasks= this.tasks.filter(t => t.id !== id)
+                this.tasks = this.tasks.filter(t => t.id !== id)
             },
             toggleFavorites(id) {
                 const task = this.tasks.find(t => t.id === id)

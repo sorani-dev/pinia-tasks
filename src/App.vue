@@ -17,6 +17,8 @@
       <button @click="filter = 'favorites'">Favorite tasks</button>
     </nav>
 
+    <!-- Loading -->
+    <div v-if="taskStore.isLoading" class="loading">Loading tasks...</div>
     <!-- Task list -->
     <div v-if="filter === 'all'" class="task-list">
       <p>Your have {{ taskStore.totalCount }} task{{ plural(taskStore.totalCount) }} left to do</p>
@@ -48,10 +50,12 @@ export default {
     const taskStore = useTaskStore()
 
     const filter = ref('all')
-    const plural = (length) => {
-      return length > 1 ? 's' : ''
-    }
-    console.log(plural)
+
+    // Fetch tasks
+    taskStore.getTasks()
+
+    // Get plural form of word ('s' if length is > 1)
+    const plural = (length) => length > 1 ? 's' : ''
 
     return {filter, taskStore, plural}
   },
@@ -114,5 +118,16 @@ header h1 {
 .new-task-form {
   background: #e7e7e7;
   padding: 20px 0;
+}
+
+/* Loading */
+.loading {
+  max-width: 640px;
+  border: 1px solid #ffd859;
+  background-color: #ffe9a0;
+  color: #3a3a3a;
+  padding: 5px 0;
+  text-align: center;
+  margin: 30px auto;
 }
 </style>
