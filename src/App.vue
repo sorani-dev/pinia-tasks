@@ -2,51 +2,59 @@
   <main>
     <!-- Heading -->
     <header>
-      <img src="./assets/logo.svg" alt="Pinia Logo">
+      <img alt="Pinia Logo" src="./assets/logo.svg">
       <h1>Pinia Tasks</h1>
     </header>
 
+    <!-- New Task form -->
+    <div class="new-task-form">
+      <TaskForm/>
+    </div>
 
-    <!-- Filter bar   -->
+    <!-- Filter bar -->
     <nav class="filter">
       <button @click="filter = 'all'">All tasks</button>
       <button @click="filter = 'favorites'">Favorite tasks</button>
     </nav>
 
     <!-- Task list -->
-    <div class="task-list" v-if="filter === 'all'">
-      <p>Your have {{ taskStore.totalCount }} task{{ plural }} left to do</p>
+    <div v-if="filter === 'all'" class="task-list">
+      <p>Your have {{ taskStore.totalCount }} task{{ plural(taskStore.totalCount) }} left to do</p>
       <div v-for="task in taskStore.tasks" :key="task.id">
-        <TaskDetails :task="task" :key="task.id" />
+        <TaskDetails :key="task.id" :task="task"/>
       </div>
     </div>
 
     <!-- Favorites task list -->
-    <div class="task-list" v-if="filter === 'favorites'">
-      <p>Your have {{ taskStore.favoritesCount }} favorite{{ plural }} left to do</p>
+    <div v-if="filter === 'favorites'" class="task-list">
+      <p>Your have {{ taskStore.favoritesCount }} favorite{{ plural(taskStore.favoritesCount) }} left to do</p>
       <div v-for="task in taskStore.favorites" :key="task.id">
-        <TaskDetails :task="task" :key="task.id" />
+        <TaskDetails :key="task.id" :task="task"/>
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import { ref } from "vue";
+import {ref} from "vue";
 
-import { useTaskStore } from "@/store/TaskStore";
+import {useTaskStore} from "@/store/TaskStore";
 import TaskDetails from "@/components/TaskDetails.vue";
+import TaskForm from "@/components/TaskForm.vue";
 
 export default {
-  components: { TaskDetails },
+  components: {TaskForm, TaskDetails},
   setup() {
     const taskStore = useTaskStore()
 
     const filter = ref('all')
-    const plural = taskStore.tasks.length > 1 ? 's' : ''
+    const plural = (length) => {
+      return length > 1 ? 's' : ''
+    }
+    console.log(plural)
 
-    return { filter, taskStore, plural }
-  }
+    return {filter, taskStore, plural}
+  },
 }
 
 </script>
@@ -100,5 +108,11 @@ header h1 {
   cursor: pointer;
   font-size: .8em;
   font-size: 1em;
+}
+
+/* New task form */
+.new-task-form {
+  background: #e7e7e7;
+  padding: 20px 0;
 }
 </style>
