@@ -1,6 +1,9 @@
-# pinia-tasks
+# Pinia Tasks
 
-This template should help get you started developing with Vue 3 in Vite.
+Task list management using Pinia store.
+
+Playlist by The Net Ninja
+https://youtube.com/playlist?list=PL4cUxeGkcC9hp28dYyYBy3xoOdoeNw-hD
 
 ## Recommended IDE Setup
 
